@@ -1,0 +1,11 @@
+NAME                      READY   STATUS              RESTARTS   AGE
+client-job-2s-10c-55znb   0/1     ContainerCreating   0          11s
+client-job-2s-1c-q8xrl    0/1     Completed           0          12s
+client-job-2s-2c-7sdg4    0/1     Completed           0          11s
+client-job-2s-3c-jf6rq    0/1     Completed           0          11s
+client-job-2s-4c-cxj56    0/1     Completed           0          11s
+client-job-2s-5c-dp78n    0/1     Completed           0          11s
+client-job-2s-6c-x597m    0/1     Completed           0          11s
+client-job-2s-7c-k59xb    0/1     ContainerCreating   0          11s
+client-job-2s-8c-qr5d5    0/1     ContainerCreating   0          11s
+client-job-2s-9c-9n5tm    0/1     ContainerCreating   0          11s

@@ -1,0 +1,46 @@
+NAME                                 READY   STATUS    RESTARTS   AGE
+server-deployment-6f9898545f-45v2g   1/1     Running   0          7m28s
+server-deployment-6f9898545f-7djcn   1/1     Running   0          9m39s
+server-deployment-6f9898545f-8bh6j   1/1     Running   0          7m28s
+server-deployment-6f9898545f-gc79c   0/1     Pending   0          0s
+server-deployment-6f9898545f-kxnj2   0/1     Pending   0          0s
+server-deployment-6f9898545f-m685r   1/1     Running   0          3m43s
+server-deployment-6f9898545f-n8w5p   1/1     Running   0          9m39s
+server-deployment-6f9898545f-t2x6w   1/1     Running   0          3m43s
+Name:                   server-deployment
+Namespace:              default
+CreationTimestamp:      Thu, 29 May 2025 21:12:13 -0300
+Labels:                 app=server
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=server
+Replicas:               8 desired | 8 updated | 8 total | 6 available | 2 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=server
+  Containers:
+   server:
+    Image:      kapelinsky/tcp-server:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:
+      PORT:        8080
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   server-deployment-6f9898545f (8/8 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  9m40s  deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  7m29s  deployment-controller  Scaled up replica set server-deployment-6f9898545f from 2 to 4
+  Normal  ScalingReplicaSet  3m44s  deployment-controller  Scaled up replica set server-deployment-6f9898545f from 4 to 6
+  Normal  ScalingReplicaSet  1s     deployment-controller  Scaled up replica set server-deployment-6f9898545f from 6 to 8

@@ -1,0 +1,3 @@
+[client-job-6s-21c-1748564472773573780] Attempt 1/10 to connect...
+[client-job-6s-21c-1748564472773573780] Connected to server-service:8080
+[client-job-6s-21c-1748564472773573780] Received from server: Hello from client! (from client-job-6s-21c-1748564472773573780)
