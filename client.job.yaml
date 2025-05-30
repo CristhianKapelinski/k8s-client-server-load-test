@@ -1,0 +1,25 @@
+# client-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: client-job-template # Este é um template, o script criará Jobs com nomes únicos
+spec:
+  backoffLimit: 0 # Não tente novamente em caso de falha do pod
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: client
+        image: kapelinsky/tcp-client:latest # Sua imagem Docker Hub
+        env:
+        - name: SERVER_IP
+          value: "server-service" # Nome do serviço Kubernetes do servidor
+        - name: SERVER_PORT
+          value: "8080"
+        - name: CLIENT_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name # Usa o nome do pod como ID do cliente
