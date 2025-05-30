@@ -45,8 +45,8 @@ Para executar este projeto, você precisará ter os seguintes componentes instal
 
 1.  **Clonar o Repositório:**
     ```bash
-    git clone <URL_DO_SEU_REPOSITORIO>
-    cd <pasta_do_projeto>
+    git clone https://github.com/CristhianKapelinski/k8s-client-server-load-test.git
+    cd k8s-client-server-load-test
     ```
 
 2.  **Configurar Usuário do Docker Hub:**
