@@ -1,0 +1,42 @@
+NAME                                 READY   STATUS              RESTARTS   AGE
+server-deployment-6f9898545f-4p5rv   1/1     Running             0          77s
+server-deployment-6f9898545f-k5zgh   1/1     Running             0          77s
+server-deployment-6f9898545f-kbkl4   1/1     Running             0          6s
+server-deployment-6f9898545f-qq7lj   1/1     Running             0          6s
+server-deployment-6f9898545f-sj5st   1/1     Running             0          6s
+server-deployment-6f9898545f-wfc9b   0/1     ContainerCreating   0          6s
+Name:                   server-deployment
+Namespace:              default
+CreationTimestamp:      Fri, 13 Jun 2025 22:22:44 -0300
+Labels:                 app=server
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=server
+Replicas:               6 desired | 6 updated | 6 total | 5 available | 1 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=server
+  Containers:
+   server:
+    Image:      kapelinsky/tcp-server:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:
+      PORT:        8080
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   server-deployment-6f9898545f (6/6 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  77s   deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  6s    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 2 to 6

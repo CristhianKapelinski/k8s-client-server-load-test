@@ -1,11 +1,11 @@
 NAME                                 READY   STATUS              RESTARTS   AGE
-server-deployment-6f9898545f-45v2g   1/1     Running             0          2m43s
-server-deployment-6f9898545f-7djcn   1/1     Running             0          4m54s
-server-deployment-6f9898545f-8bh6j   0/1     ContainerCreating   0          2m43s
-server-deployment-6f9898545f-n8w5p   1/1     Running             0          4m54s
+server-deployment-6f9898545f-57r7j   1/1     Running             0          3s
+server-deployment-6f9898545f-bx42l   0/1     ContainerCreating   0          3s
+server-deployment-6f9898545f-mncpn   1/1     Running             0          41s
+server-deployment-6f9898545f-rknh2   1/1     Running             0          41s
 Name:                   server-deployment
 Namespace:              default
-CreationTimestamp:      Thu, 29 May 2025 21:12:13 -0300
+CreationTimestamp:      Fri, 13 Jun 2025 22:09:26 -0300
 Labels:                 app=server
 Annotations:            deployment.kubernetes.io/revision: 1
 Selector:               app=server
@@ -34,7 +34,7 @@ Conditions:
 OldReplicaSets:  <none>
 NewReplicaSet:   server-deployment-6f9898545f (4/4 replicas created)
 Events:
-  Type    Reason             Age    From                   Message
-  ----    ------             ----   ----                   -------
-  Normal  ScalingReplicaSet  4m54s  deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
-  Normal  ScalingReplicaSet  2m43s  deployment-controller  Scaled up replica set server-deployment-6f9898545f from 2 to 4
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  41s   deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  3s    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 2 to 4

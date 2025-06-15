@@ -1,17 +1,17 @@
 NAME                                 READY   STATUS              RESTARTS   AGE
-server-deployment-6f9898545f-45v2g   1/1     Running             0          10m
-server-deployment-6f9898545f-7djcn   1/1     Running             0          12m
-server-deployment-6f9898545f-7hlxg   0/1     ContainerCreating   0          96s
-server-deployment-6f9898545f-8bh6j   1/1     Running             0          10m
-server-deployment-6f9898545f-gc79c   1/1     Running             0          2m40s
-server-deployment-6f9898545f-kxnj2   1/1     Running             0          2m40s
-server-deployment-6f9898545f-m685r   1/1     Running             0          6m23s
-server-deployment-6f9898545f-n8w5p   1/1     Running             0          12m
-server-deployment-6f9898545f-t2x6w   1/1     Running             0          6m23s
-server-deployment-6f9898545f-tbwq2   0/1     ContainerCreating   0          96s
+server-deployment-6f9898545f-57r7j   1/1     Running             0          104s
+server-deployment-6f9898545f-6s7wn   1/1     Running             0          33s
+server-deployment-6f9898545f-7twcz   1/1     Running             0          69s
+server-deployment-6f9898545f-bx42l   1/1     Running             0          104s
+server-deployment-6f9898545f-cct99   0/1     ContainerCreating   0          0s
+server-deployment-6f9898545f-kg2jc   1/1     Running             0          69s
+server-deployment-6f9898545f-mdwjm   0/1     ContainerCreating   0          0s
+server-deployment-6f9898545f-mncpn   1/1     Running             0          2m22s
+server-deployment-6f9898545f-rknh2   1/1     Running             0          2m22s
+server-deployment-6f9898545f-t4tv6   1/1     Running             0          33s
 Name:                   server-deployment
 Namespace:              default
-CreationTimestamp:      Thu, 29 May 2025 21:12:13 -0300
+CreationTimestamp:      Fri, 13 Jun 2025 22:09:26 -0300
 Labels:                 app=server
 Annotations:            deployment.kubernetes.io/revision: 1
 Selector:               app=server
@@ -42,8 +42,8 @@ NewReplicaSet:   server-deployment-6f9898545f (10/10 replicas created)
 Events:
   Type    Reason             Age    From                   Message
   ----    ------             ----   ----                   -------
-  Normal  ScalingReplicaSet  12m    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
-  Normal  ScalingReplicaSet  10m    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 2 to 4
-  Normal  ScalingReplicaSet  6m23s  deployment-controller  Scaled up replica set server-deployment-6f9898545f from 4 to 6
-  Normal  ScalingReplicaSet  2m40s  deployment-controller  Scaled up replica set server-deployment-6f9898545f from 6 to 8
-  Normal  ScalingReplicaSet  96s    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 8 to 10
+  Normal  ScalingReplicaSet  2m22s  deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  104s   deployment-controller  Scaled up replica set server-deployment-6f9898545f from 2 to 4
+  Normal  ScalingReplicaSet  69s    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 4 to 6
+  Normal  ScalingReplicaSet  33s    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 6 to 8
+  Normal  ScalingReplicaSet  0s     deployment-controller  Scaled up replica set server-deployment-6f9898545f from 8 to 10

@@ -1,3 +1,3 @@
-[client-job-2s-1c-1748564020281631833] Attempt 1/10 to connect...
-[client-job-2s-1c-1748564020281631833] Connected to server-service:8080
-[client-job-2s-1c-1748564020281631833] Received from server: Hello from client! (from client-job-2s-1c-1748564020281631833)
+[client-job-2s-10c-1749766400613540496] Attempt 1/10 to connect...
+[client-job-2s-10c-1749766400613540496] Connected to server-service:8080
+[client-job-2s-10c-1749766400613540496] Received from server: Hello from client! (from client-job-2s-10c-1749766400613540496)

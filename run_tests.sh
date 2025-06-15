@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define seu usuário do Docker Hub
-DOCKER_USER="kapelinsky"
+DOCKER_USER="kapelinsky" # Default, can be overridden by argument
 
 # Imagens Docker
 SERVER_IMAGE="$DOCKER_USER/tcp-server:latest"
@@ -9,14 +9,46 @@ CLIENT_IMAGE="$DOCKER_USER/tcp-client:latest"
 
 # Diretório para salvar os logs
 LOG_DIR="logs"
+RAW_LOG_DIR="$LOG_DIR/raw_client_logs" # Directory for raw client logs
+
+# Configurações de teste padrão
+SERVER_REPLICAS_ARRAY=(2 4 6 8 10)
+CLIENT_CONCURRENCY_ARRAY=(10 20 30 40 50 60 70 80 90 100)
+MESSAGES_PER_CLIENT_ARRAY=(1 10 100)
+
+# Função para exibir uso
+usage() {
+    echo "Uso: $0 [-u <docker_user>] [-s <server_replicas>] [-c <client_concurrency>] [-m <messages_per_client>]"
+    echo "  -u <docker_user>: Usuário do Docker Hub (padrão: $DOCKER_USER)"
+    echo "  -s <server_replicas>: Lista de réplicas de servidor separadas por vírgula (padrão: ${SERVER_REPLICAS_ARRAY[*]//$'\n'/,})"
+    echo "  -c <client_concurrency>: Lista de clientes concorrentes por pod separados por vírgula (padrão: ${CLIENT_CONCURRENCY_ARRAY[*]//$'\n'/,})"
+    echo "  -m <messages_per_client>: Lista de mensagens por cliente separado por vírgula (padrão: ${MESSAGES_PER_CLIENT_ARRAY[*]//$'\n'/,})"
+    exit 1
+}
+
+# Parse argumentos da linha de comando
+while getopts "u:s:c:m:" opt; do
+    case "$opt" in
+        u) DOCKER_USER="$OPTARG"
+           SERVER_IMAGE="$DOCKER_USER/tcp-server:latest"
+           CLIENT_IMAGE="$DOCKER_USER/tcp-client:latest"
+           ;;
+        s) IFS=',' read -r -a SERVER_REPLICAS_ARRAY <<< "$OPTARG" ;;
+        c) IFS=',' read -r -a CLIENT_CONCURRENCY_ARRAY <<< "$OPTARG" ;;
+        m) IFS=',' read -r -a MESSAGES_PER_CLIENT_ARRAY <<< "$OPTARG" ;;
+        \?) usage ;;
+    esac
+done
+shift $((OPTIND-1))
 
 # Limpa qualquer resquício de execuções anteriores no Kubernetes
 cleanup_kubernetes() {
     echo "Limpando recursos Kubernetes..."
-    kubectl delete deployment server-deployment --ignore-not-found --wait=false # Não espera a exclusão para agilizar
+    kubectl delete deployment server-deployment --ignore-not-found --wait=false
     kubectl delete service server-service --ignore-not-found --wait=false
     kubectl delete jobs -l app=client --ignore-not-found --wait=false
-    sleep 5 # Dê um tempo para o Kubernetes processar as deleções
+    # Espera para garantir que os recursos foram removidos antes de prosseguir
+    sleep 5
     echo "Recursos Kubernetes limpos."
 }
 
@@ -48,9 +80,15 @@ wait_for_deployment() {
 # Executa os testes
 run_tests() {
     mkdir -p "$LOG_DIR"
+    mkdir -p "$RAW_LOG_DIR"
 
-    # Testes de servidor (2 a 10 instâncias, aumentando de 2 em 2)
-    for num_servers in 2 4 6 8 10; do
+    # Aplica o deployment inicial do servidor (que já inclui o Service)
+    echo "Aplicando deployment e serviço iniciais do servidor..."
+    kubectl apply -f server-deployment.yaml
+    wait_for_deployment server-deployment
+
+    # Testes
+    for num_servers in "${SERVER_REPLICAS_ARRAY[@]}"; do
         echo "--- Testando com $num_servers instâncias de servidor ---"
         
         # Atualiza o número de réplicas do servidor e aplica o deployment
@@ -64,17 +102,19 @@ run_tests() {
         kubectl get pods -l app=server > "$LOG_DIR/server_pods_${num_servers}.log"
         kubectl describe deployment server-deployment >> "$LOG_DIR/server_pods_${num_servers}.log"
         
-        # Testes de cliente (APENAS 10, 50, 100 clientes)
-        for num_clients in 10 50 100; do # <-- AQUI ESTÁ A MUDANÇA
-            echo "--- Testando com $num_clients clientes (com $num_servers servidores) ---"
-            
-            # Limpa Jobs de cliente anteriores
-            kubectl delete jobs -l app=client --ignore-not-found --wait=false
-            sleep 5 # Aumentado para garantir que a deleção seja processada antes de criar novos
+        # Testes de cliente
+        for num_concurrent_clients in "${CLIENT_CONCURRENCY_ARRAY[@]}"; do
+            for num_messages_per_client in "${MESSAGES_PER_CLIENT_ARRAY[@]}"; do
+                echo "--- Testando com $num_concurrent_clients clientes (concorrentes) e $num_messages_per_client mensagens (com $num_servers servidores) ---"
+                
+                # Limpa Jobs de cliente anteriores
+                kubectl delete jobs -l app=client --ignore-not-found --wait=false
+                sleep 5 # Garante que os jobs foram removidos
 
-            # Cria Jobs de cliente
-            for i in $(seq 1 $num_clients); do
-                CLIENT_JOB_NAME="client-job-${num_servers}s-${i}c"
+                CLIENT_JOB_NAME="client-job-${num_servers}s-${num_concurrent_clients}c-${num_messages_per_client}m"
+                RAW_LOG_FILE="$RAW_LOG_DIR/client_raw_log_${num_servers}s_${num_concurrent_clients}c_${num_messages_per_client}m.log"
+
+                # Cria Job de cliente (apenas um pod cliente por vez para este cenário)
                 cat <<EOF | kubectl apply -f -
 apiVersion: batch/v1
 kind: Job
@@ -97,57 +137,75 @@ spec:
         - name: SERVER_PORT
           value: "8080"
         - name: CLIENT_ID
-          value: "$CLIENT_JOB_NAME-$(date +%s%N)"
+          value: "$CLIENT_JOB_NAME-$(date +%s%N)" # Unique ID for the pod
+        - name: NUM_CONCURRENT_CLIENTS
+          value: "$num_concurrent_clients"
+        - name: NUM_MESSAGES_PER_CLIENT
+          value: "$num_messages_per_client"
 EOF
-            done
+                echo "Aguardando a conclusão do Job do cliente '$CLIENT_JOB_NAME' (pode levar um tempo)..."
+                # Calcula um timeout mais inteligente baseado no número de mensagens e clientes concorrentes
+                # Assumindo ~100ms de latência por mensagem e um buffer para a inicialização
+                estimated_time_per_message_ms=100 
+                # Total de interações de mensagem para um único cliente concorrente
+                total_message_interactions=$((num_concurrent_clients * num_messages_per_client))
+                timeout_seconds=$((total_message_interactions / 10 + 60)) # Base 100ms/message, plus 60s buffer
+                if [ $timeout_seconds -lt 120 ]; then timeout_seconds=120; fi # Minimum 2 minutes
 
-            echo "Aguardando a conclusão dos Jobs do cliente (pode levar um tempo)..."
-            # Loop mais inteligente para aguardar todos os jobs concluírem
-            start_time=$(date +%s)
-            timeout_seconds=$((num_clients * 2 + 60)) # Aumenta timeout com mais clientes, mínimo de 60s
-            jobs_completed=0
-            while [ $jobs_completed -lt $num_clients ]; do
-                current_time=$(date +%s)
-                if (( current_time - start_time > timeout_seconds )); then
-                    echo "Erro: Tempo limite de espera para os jobs do cliente excedido ($timeout_seconds segundos)."
-                    break
+                kubectl wait --for=condition=complete job/"$CLIENT_JOB_NAME" --timeout=${timeout_seconds}s
+                if [ $? -ne 0 ]; then
+                    echo "Erro: O Job '$CLIENT_JOB_NAME' não foi concluído a tempo ou falhou."
+                    # Captura logs mesmo se falhar para depuração
+                    echo "Salvando logs do pod do cliente falho em $RAW_LOG_FILE"
+                    failed_pod=$(kubectl get pods -l job-name="$CLIENT_JOB_NAME" -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
+                    if [ -n "$failed_pod" ]; then
+                        kubectl logs "$failed_pod" > "$RAW_LOG_FILE"
+                    else
+                        echo "Nenhum pod encontrado para o job $CLIENT_JOB_NAME." >> "$RAW_LOG_FILE"
+                    fi
+                else
+                    echo "Job '$CLIENT_JOB_NAME' concluído."
+                    echo "Salvando logs do pod do cliente em $RAW_LOG_FILE"
+                    # Assume que o job gerou apenas um pod, ou pega o primeiro que completou
+                    client_pod_name=$(kubectl get pods -l job-name="$CLIENT_JOB_NAME" --field-selector=status.phase=Succeeded -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
+                    if [ -n "$client_pod_name" ]; then
+                        kubectl logs "$client_pod_name" > "$RAW_LOG_FILE"
+                    else
+                        echo "Nenhum pod concluído encontrado para o job $CLIENT_JOB_NAME." > "$RAW_LOG_FILE"
+                    fi
                 fi
-                jobs_completed=$(kubectl get jobs -l app=client -o jsonpath='{.items[*].status.succeeded}' 2>/dev/null | tr -s ' ' '\n' | grep -c 1 || echo 0)
-                echo "Jobs concluídos: $jobs_completed/$num_clients"
-                sleep 10 # Verifica a cada 10 segundos
-            done
-            
-            echo "Salvando status dos Jobs do cliente em $LOG_DIR/client_jobs_${num_servers}s_${num_clients}c.log"
-            kubectl get jobs -l app=client > "$LOG_DIR/client_jobs_${num_servers}s_${num_clients}c.log"
+                
+                # Opcional: Salvar status do job e pod, mas os logs brutos são mais importantes agora
+                # kubectl get jobs "$CLIENT_JOB_NAME" > "$LOG_DIR/client_job_status_${num_servers}s_${num_concurrent_clients}c_${num_messages_per_client}m.log"
+                # kubectl get pods -l job-name="$CLIENT_JOB_NAME" > "$LOG_DIR/client_pod_status_${num_servers}s_${num_concurrent_clients}c_${num_messages_per_client}m.log"
 
-            echo "Salvando status dos Pods do cliente em $LOG_DIR/client_pods_${num_servers}s_${num_clients}c.log"
-            kubectl get pods -l app=client > "$LOG_DIR/client_pods_${num_servers}s_${num_clients}c.log"
+            done # num_messages_per_client
+        done # num_concurrent_clients
+    done # num_servers
+}
 
-            echo "Salvando logs de um cliente de exemplo em $LOG_DIR/client_logs_example_${num_servers}s_${num_clients}c.log"
-            first_client_pod=$(kubectl get pods -l app=client --field-selector=status.phase=Succeeded -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
-            if [ -n "$first_client_pod" ]; then
-                kubectl logs "$first_client_pod" > "$LOG_DIR/client_logs_example_${num_servers}s_${num_clients}c.log"
-            else
-                echo "Nenhum pod de cliente concluído encontrado para exibir logs." > "$LOG_DIR/client_logs_example_${num_servers}s_${num_clients}c.log"
-            fi
-        done
-    done
+# Processa logs e gera CSV
+process_and_generate_csv() {
+    echo "Processando logs brutos e gerando CSV..."
+    python3 process_logs.py "$RAW_LOG_DIR" "$LOG_DIR/results.csv" || { echo "Erro ao processar logs e gerar CSV."; exit 1; }
+    echo "Dados de teste salvos em $LOG_DIR/results.csv"
+}
+
+# Gera gráficos
+generate_graphs() {
+    echo "Gerando gráficos de resultados..."
+    python3 generate_graphs.py "$LOG_DIR/results.csv" "$LOG_DIR/graphs" || { echo "Erro ao gerar gráficos."; exit 1; }
+    echo "Gráficos salvos em $LOG_DIR/graphs/"
 }
 
 # Ordem de execução
 cleanup_kubernetes
 build_and_push_images
-
-# Aplica o deployment inicial do servidor (que já inclui o Service)
-echo "Aplicando deployment e serviço iniciais do servidor..."
-kubectl apply -f server-deployment.yaml
-wait_for_deployment server-deployment
-
 run_tests
+process_and_generate_csv
+generate_graphs
+cleanup_kubernetes # Limpeza final
 
 echo "Todos os testes foram concluídos."
 echo "Os logs estão salvos no diretório '$LOG_DIR/'."
-echo "Limpando recursos finais do Kubernetes..."
-cleanup_kubernetes
-
 echo "Script finalizado."
