@@ -1,7 +1,4 @@
 # Projeto: Avaliação de Escalabilidade de Aplicações Cliente-Servidor TCP/IP em Kubernetes
-
-![Capa do Projeto - Exemplo de logo ou ícone de Kubernetes com clientes/servidores]
-
 ---
 
 ## 🚀 Visão Geral do Projeto
@@ -208,5 +205,5 @@ Este projeto está licenciado sob a licença MIT. Veja o arquivo `LICENSE` para 
 
 ---
 
-**Autor:** Seu Nome / Nome da Equipe
+**Autor:** Cristhian Kapelinski
 **Data:** 15 de Junho de 2025
