@@ -1,8 +1,0 @@
-# Dockerfile.client
-FROM python:3.9-slim-buster
-
-WORKDIR /app
-
-COPY client.py .
-
-CMD ["python", "client.py"]
