@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- Configurações ---
-DOCKER_USER="kapelinsky" # Seu usuário do Docker Hub
+DOCKER_USER="meu_uusuario_docker" # Seu usuário do Docker Hub
 
 # Imagens Docker Python
 SERVER_IMAGE_PYTHON="$DOCKER_USER/tcp-server:latest"
