@@ -1,0 +1,51 @@
+--- STATUS EM Sat Jun 28 08:20:06 AM -03 2025 ---
+NAME                                 READY   STATUS              RESTARTS   AGE   IP              NODE       NOMINATED NODE   READINESS GATES
+server-deployment-6f9898545f-b9nc8   1/1     Running             0          5s    10.244.14.244   minikube   <none>           <none>
+server-deployment-6f9898545f-kbzqh   1/1     Running             0          5s    10.244.14.245   minikube   <none>           <none>
+server-deployment-77f8657bdc-2p7tz   1/1     Terminating         0          21m   10.244.14.121   minikube   <none>           <none>
+server-deployment-77f8657bdc-9cxlb   1/1     Terminating         0          41m   10.244.13.252   minikube   <none>           <none>
+server-deployment-77f8657bdc-cpmfl   1/1     Terminating         0          41m   10.244.13.253   minikube   <none>           <none>
+server-deployment-77f8657bdc-htlsz   1/1     Terminating         0          11m   10.244.14.183   minikube   <none>           <none>
+server-deployment-77f8657bdc-j9jh6   1/1     Terminating         0          31m   10.244.14.59    minikube   <none>           <none>
+server-deployment-77f8657bdc-k4svk   1/1     Terminating         0          50m   10.244.13.190   minikube   <none>           <none>
+server-deployment-77f8657bdc-lmxqd   1/1     Terminating         0          50m   10.244.13.192   minikube   <none>           <none>
+server-deployment-77f8657bdc-p8qvr   1/1     Terminating         0          21m   10.244.14.120   minikube   <none>           <none>
+server-deployment-77f8657bdc-s4sds   1/1     Terminating         0          11m   10.244.14.182   minikube   <none>           <none>
+server-deployment-77f8657bdc-vcnkv   1/1     Terminating         0          31m   10.244.14.58    minikube   <none>           <none>
+server-deployment-85ffcbb4fd-v6wsk   0/1     ContainerCreating   0          5s    <none>          minikube   <none>           <none>
+
+Name:                   server-deployment
+Namespace:              default
+CreationTimestamp:      Sat, 28 Jun 2025 08:20:01 -0300
+Labels:                 app=server
+Annotations:            deployment.kubernetes.io/revision: 2
+Selector:               app=server
+Replicas:               2 desired | 1 updated | 3 total | 2 available | 1 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=server
+  Containers:
+   server:
+    Image:      kapelinsky/tcp-server-go:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:
+      PORT:        8080
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    ReplicaSetUpdated
+OldReplicaSets:  server-deployment-6f9898545f (2/2 replicas created)
+NewReplicaSet:   server-deployment-85ffcbb4fd (1/1 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  6s    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  6s    deployment-controller  Scaled up replica set server-deployment-85ffcbb4fd from 0 to 1

@@ -1,0 +1,41 @@
+--- STATUS EM Sat Jun 28 01:18:23 PM -03 2025 ---
+NAME                                 READY   STATUS              RESTARTS   AGE   IP              NODE       NOMINATED NODE   READINESS GATES
+server-deployment-6f9898545f-j9t4p   1/1     Running             0          5s    10.244.23.124   minikube   <none>           <none>
+server-deployment-6f9898545f-ptlbm   1/1     Running             0          5s    10.244.23.125   minikube   <none>           <none>
+server-deployment-77f8657bdc-p5ztv   0/1     ContainerCreating   0          5s    <none>          minikube   <none>           <none>
+
+Name:                   server-deployment
+Namespace:              default
+CreationTimestamp:      Sat, 28 Jun 2025 13:18:18 -0300
+Labels:                 app=server
+Annotations:            deployment.kubernetes.io/revision: 2
+Selector:               app=server
+Replicas:               2 desired | 1 updated | 3 total | 2 available | 1 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=server
+  Containers:
+   server:
+    Image:      kapelinsky/tcp-server-cpp:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:
+      PORT:        8080
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    ReplicaSetUpdated
+OldReplicaSets:  server-deployment-6f9898545f (2/2 replicas created)
+NewReplicaSet:   server-deployment-77f8657bdc (1/1 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  5s    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  5s    deployment-controller  Scaled up replica set server-deployment-77f8657bdc from 0 to 1
