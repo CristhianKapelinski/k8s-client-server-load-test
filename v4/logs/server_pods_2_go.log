@@ -1,0 +1,47 @@
+NAME                                 READY   STATUS        RESTARTS   AGE
+server-deployment-6f9898545f-4dvpc   1/1     Terminating   0          41m
+server-deployment-6f9898545f-796tp   1/1     Terminating   0          41m
+server-deployment-6f9898545f-7qg4m   1/1     Terminating   0          23m
+server-deployment-6f9898545f-f42xx   1/1     Terminating   0          13m
+server-deployment-6f9898545f-j7v2w   1/1     Terminating   0          13m
+server-deployment-6f9898545f-mrzmg   1/1     Terminating   0          23m
+server-deployment-6f9898545f-rw2mm   1/1     Terminating   0          51m
+server-deployment-6f9898545f-v7n2z   1/1     Terminating   0          32m
+server-deployment-6f9898545f-vwmmd   1/1     Terminating   0          51m
+server-deployment-6f9898545f-xm2km   1/1     Terminating   0          32m
+server-deployment-85ffcbb4fd-7hfqm   1/1     Running       0          5s
+server-deployment-85ffcbb4fd-8cl9n   1/1     Running       0          5s
+Name:                   server-deployment
+Namespace:              default
+CreationTimestamp:      Sun, 15 Jun 2025 16:55:46 -0300
+Labels:                 app=server
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=server
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=server
+  Containers:
+   server:
+    Image:      kapelinsky/tcp-server-go:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:
+      PORT:        8080
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   server-deployment-85ffcbb4fd (2/2 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  5s    deployment-controller  Scaled up replica set server-deployment-85ffcbb4fd from 0 to 2
