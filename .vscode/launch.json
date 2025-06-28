@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/cristhian/Documents/newCodespace/programs/redes/kubernetes/k8s-client-server-load-test/integrated",
-      "program": "/home/cristhian/Documents/newCodespace/programs/redes/kubernetes/k8s-client-server-load-test/integrated/build/Debug/outDebug",
+      "cwd": "/home/cristhian/Documents/newCodespace/programs/redes/kubernetes/k8s-client-server-load-test",
+      "program": "/home/cristhian/Documents/newCodespace/programs/redes/kubernetes/k8s-client-server-load-test/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
