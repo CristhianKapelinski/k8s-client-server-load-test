@@ -1,0 +1,55 @@
+--- STATUS EM Sat Jun 28 12:38:36 AM -03 2025 ---
+NAME                                 READY   STATUS              RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+server-deployment-77f8657bdc-5phh7   1/1     Running             0          21m   10.244.2.10    minikube   <none>           <none>
+server-deployment-77f8657bdc-6vdj5   0/1     ContainerCreating   0          0s    <none>         minikube   <none>           <none>
+server-deployment-77f8657bdc-86rjb   1/1     Running             0          21m   10.244.2.11    minikube   <none>           <none>
+server-deployment-77f8657bdc-dmcmd   1/1     Running             0          31m   10.244.1.205   minikube   <none>           <none>
+server-deployment-77f8657bdc-fxqc2   1/1     Running             0          31m   10.244.1.204   minikube   <none>           <none>
+server-deployment-77f8657bdc-gnd57   1/1     Running             0          42m   10.244.1.144   minikube   <none>           <none>
+server-deployment-77f8657bdc-lfv2g   0/1     ContainerCreating   0          0s    <none>         minikube   <none>           <none>
+server-deployment-77f8657bdc-t4gjv   1/1     Running             0          11m   10.244.2.73    minikube   <none>           <none>
+server-deployment-77f8657bdc-vwf5d   1/1     Running             0          42m   10.244.1.142   minikube   <none>           <none>
+server-deployment-77f8657bdc-wm7r9   1/1     Running             0          11m   10.244.2.72    minikube   <none>           <none>
+
+Name:                   server-deployment
+Namespace:              default
+CreationTimestamp:      Fri, 27 Jun 2025 23:56:21 -0300
+Labels:                 app=server
+Annotations:            deployment.kubernetes.io/revision: 2
+Selector:               app=server
+Replicas:               10 desired | 10 updated | 10 total | 8 available | 2 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=server
+  Containers:
+   server:
+    Image:      kapelinsky/tcp-server-cpp:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:
+      PORT:        8080
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  server-deployment-6f9898545f (0/0 replicas created)
+NewReplicaSet:   server-deployment-77f8657bdc (10/10 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  42m   deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  42m   deployment-controller  Scaled up replica set server-deployment-77f8657bdc from 0 to 1
+  Normal  ScalingReplicaSet  42m   deployment-controller  Scaled down replica set server-deployment-6f9898545f from 2 to 1
+  Normal  ScalingReplicaSet  42m   deployment-controller  Scaled up replica set server-deployment-77f8657bdc from 1 to 2
+  Normal  ScalingReplicaSet  42m   deployment-controller  Scaled down replica set server-deployment-6f9898545f from 1 to 0
+  Normal  ScalingReplicaSet  31m   deployment-controller  Scaled up replica set server-deployment-77f8657bdc from 2 to 4
+  Normal  ScalingReplicaSet  21m   deployment-controller  Scaled up replica set server-deployment-77f8657bdc from 4 to 6
+  Normal  ScalingReplicaSet  11m   deployment-controller  Scaled up replica set server-deployment-77f8657bdc from 6 to 8
+  Normal  ScalingReplicaSet  0s    deployment-controller  Scaled up replica set server-deployment-77f8657bdc from 8 to 10

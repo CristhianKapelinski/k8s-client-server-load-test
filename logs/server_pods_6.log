@@ -1,13 +1,13 @@
 NAME                                 READY   STATUS              RESTARTS   AGE
-server-deployment-6f9898545f-57r7j   1/1     Running             0          38s
-server-deployment-6f9898545f-7twcz   0/1     ContainerCreating   0          3s
-server-deployment-6f9898545f-bx42l   1/1     Running             0          38s
-server-deployment-6f9898545f-kg2jc   1/1     Running             0          3s
-server-deployment-6f9898545f-mncpn   1/1     Running             0          76s
-server-deployment-6f9898545f-rknh2   1/1     Running             0          76s
+server-deployment-6f9898545f-4p5rv   1/1     Running             0          77s
+server-deployment-6f9898545f-k5zgh   1/1     Running             0          77s
+server-deployment-6f9898545f-kbkl4   1/1     Running             0          6s
+server-deployment-6f9898545f-qq7lj   1/1     Running             0          6s
+server-deployment-6f9898545f-sj5st   1/1     Running             0          6s
+server-deployment-6f9898545f-wfc9b   0/1     ContainerCreating   0          6s
 Name:                   server-deployment
 Namespace:              default
-CreationTimestamp:      Fri, 13 Jun 2025 22:09:26 -0300
+CreationTimestamp:      Fri, 13 Jun 2025 22:22:44 -0300
 Labels:                 app=server
 Annotations:            deployment.kubernetes.io/revision: 1
 Selector:               app=server
@@ -38,6 +38,5 @@ NewReplicaSet:   server-deployment-6f9898545f (6/6 replicas created)
 Events:
   Type    Reason             Age   From                   Message
   ----    ------             ----  ----                   -------
-  Normal  ScalingReplicaSet  76s   deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
-  Normal  ScalingReplicaSet  38s   deployment-controller  Scaled up replica set server-deployment-6f9898545f from 2 to 4
-  Normal  ScalingReplicaSet  3s    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 4 to 6
+  Normal  ScalingReplicaSet  77s   deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  6s    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 2 to 6

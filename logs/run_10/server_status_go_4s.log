@@ -1,0 +1,46 @@
+--- STATUS EM Sat Jun 28 12:52:11 PM -03 2025 ---
+NAME                                 READY   STATUS              RESTARTS   AGE     IP              NODE       NOMINATED NODE   READINESS GATES
+server-deployment-85ffcbb4fd-4zw7z   1/1     Running             0          6m21s   10.244.22.70    minikube   <none>           <none>
+server-deployment-85ffcbb4fd-st8kp   1/1     Running             0          6m15s   10.244.22.72    minikube   <none>           <none>
+server-deployment-85ffcbb4fd-tr5xv   1/1     Running             0          4s      10.244.22.133   minikube   <none>           <none>
+server-deployment-85ffcbb4fd-vt4rg   0/1     ContainerCreating   0          4s      <none>          minikube   <none>           <none>
+
+Name:                   server-deployment
+Namespace:              default
+CreationTimestamp:      Sat, 28 Jun 2025 12:45:49 -0300
+Labels:                 app=server
+Annotations:            deployment.kubernetes.io/revision: 2
+Selector:               app=server
+Replicas:               4 desired | 4 updated | 4 total | 3 available | 1 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=server
+  Containers:
+   server:
+    Image:      kapelinsky/tcp-server-go:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:
+      PORT:        8080
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  server-deployment-6f9898545f (0/0 replicas created)
+NewReplicaSet:   server-deployment-85ffcbb4fd (4/4 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  6m22s  deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  6m21s  deployment-controller  Scaled up replica set server-deployment-85ffcbb4fd from 0 to 1
+  Normal  ScalingReplicaSet  6m15s  deployment-controller  Scaled down replica set server-deployment-6f9898545f from 2 to 1
+  Normal  ScalingReplicaSet  6m15s  deployment-controller  Scaled up replica set server-deployment-85ffcbb4fd from 1 to 2
+  Normal  ScalingReplicaSet  6m12s  deployment-controller  Scaled down replica set server-deployment-6f9898545f from 1 to 0
+  Normal  ScalingReplicaSet  4s     deployment-controller  Scaled up replica set server-deployment-85ffcbb4fd from 2 to 4
