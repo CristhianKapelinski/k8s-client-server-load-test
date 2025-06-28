@@ -1,0 +1,49 @@
+--- STATUS EM Sat Jun 28 12:58:23 PM -03 2025 ---
+NAME                                 READY   STATUS              RESTARTS   AGE     IP              NODE       NOMINATED NODE   READINESS GATES
+server-deployment-85ffcbb4fd-4zw7z   1/1     Running             0          12m     10.244.22.70    minikube   <none>           <none>
+server-deployment-85ffcbb4fd-mxlfr   1/1     Running             0          3s      10.244.22.194   minikube   <none>           <none>
+server-deployment-85ffcbb4fd-nmvr4   0/1     ContainerCreating   0          3s      <none>          minikube   <none>           <none>
+server-deployment-85ffcbb4fd-st8kp   1/1     Running             0          12m     10.244.22.72    minikube   <none>           <none>
+server-deployment-85ffcbb4fd-tr5xv   1/1     Running             0          6m16s   10.244.22.133   minikube   <none>           <none>
+server-deployment-85ffcbb4fd-vt4rg   1/1     Running             0          6m16s   10.244.22.132   minikube   <none>           <none>
+
+Name:                   server-deployment
+Namespace:              default
+CreationTimestamp:      Sat, 28 Jun 2025 12:45:49 -0300
+Labels:                 app=server
+Annotations:            deployment.kubernetes.io/revision: 2
+Selector:               app=server
+Replicas:               6 desired | 6 updated | 6 total | 5 available | 1 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=server
+  Containers:
+   server:
+    Image:      kapelinsky/tcp-server-go:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:
+      PORT:        8080
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  server-deployment-6f9898545f (0/0 replicas created)
+NewReplicaSet:   server-deployment-85ffcbb4fd (6/6 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  12m    deployment-controller  Scaled up replica set server-deployment-6f9898545f from 0 to 2
+  Normal  ScalingReplicaSet  12m    deployment-controller  Scaled up replica set server-deployment-85ffcbb4fd from 0 to 1
+  Normal  ScalingReplicaSet  12m    deployment-controller  Scaled down replica set server-deployment-6f9898545f from 2 to 1
+  Normal  ScalingReplicaSet  12m    deployment-controller  Scaled up replica set server-deployment-85ffcbb4fd from 1 to 2
+  Normal  ScalingReplicaSet  12m    deployment-controller  Scaled down replica set server-deployment-6f9898545f from 1 to 0
+  Normal  ScalingReplicaSet  6m16s  deployment-controller  Scaled up replica set server-deployment-85ffcbb4fd from 2 to 4
+  Normal  ScalingReplicaSet  3s     deployment-controller  Scaled up replica set server-deployment-85ffcbb4fd from 4 to 6
