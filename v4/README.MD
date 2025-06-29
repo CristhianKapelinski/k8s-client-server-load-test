@@ -27,7 +27,7 @@ Este projeto automatiza testes de desempenho entre implementações de servidore
 
 1. **Clone o repositório e acesse o diretório:**
      ```bash
-     git clone <repo-url>
+     git clone https://github.com/CristhianKapelinski/k8s-client-server-load-test.git
      cd k8s-client-server-load-test/v4
      ```
 
