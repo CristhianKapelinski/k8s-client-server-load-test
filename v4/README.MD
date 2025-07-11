@@ -85,7 +85,6 @@ Os principais gráficos de análise dos testes estão disponíveis abaixo:
 
 - ![Latência vs Clientes (com outliers)](logs/final_graphs/1a_latency_vs_clients_with_outliers.png)
 - ![Latência vs Clientes (sem outliers)](logs/final_graphs/1b_latency_vs_clients_no_outliers.png)
-- ![Taxa de Sucesso vs Clientes](logs/final_graphs/2_success_rate_vs_clients.png)
 - ![Latência vs Réplicas de Servidor (com outliers)](logs/final_graphs/3a_latency_vs_servers_with_outliers.png)
 - ![Latência vs Réplicas de Servidor (sem outliers)](logs/final_graphs/3b_latency_vs_servers_no_outliers.png)
 - ![Distribuição Geral de Latência](logs/final_graphs/4_overall_latency_distribution.png)
@@ -93,9 +92,6 @@ Os principais gráficos de análise dos testes estão disponíveis abaixo:
 - ![Heatmap de Latência (Go)](logs/final_graphs/5_heatmap_latency_go.png)
 - ![Estabilidade da Latência por Execução - Cenário 1](logs/final_graphs/6a_run_stability_latency_scenario1.png)
 - ![Estabilidade da Latência por Execução - Cenário 3](logs/final_graphs/6a_run_stability_latency_scenario3.png)
-- ![Estabilidade da Taxa de Sucesso por Execução - Cenário 1](logs/final_graphs/6b_run_stability_success_scenario1.png)
-- ![Estabilidade da Taxa de Sucesso por Execução - Cenário 3](logs/final_graphs/6b_run_stability_success_scenario3.png)
-
 ---
 
 ## Estatísticas Gerais Agrupadas por Linguagem
