@@ -98,17 +98,34 @@ Os principais gráficos de análise dos testes estão disponíveis abaixo:
 
 ---
 
-## Estatísticas Gerais
+## Estatísticas Gerais Agrupadas por Linguagem
 
-**Agrupadas por Linguagem:**
+
+**Tabela 1 Estatísticas Gerais das 10 execucoes:**
+
+| language | Média Latência (ms) | Desvio Padrão | Mediana | 95% Percentil | Máx | Taxa de Sucesso (%) | Total de Mensagens Recebidas (média) |
+|----------|---------------------|---------------|---------|---------------|-----|---------------------|--------------------------------------|
+| cpp      | 1.52                | 0.73          | 1.40    | 2.75          | 3.57| 100                 | 106434.17                            |
+| go       | 0.95                | 0.44          | 0.97    | 1.64          | 2.32| 100                 | 106434.17                            |
+
+
+**Tabela 2 Execucao número 10:**
 
 | Linguagem | Média Latência (ms) | Desvio Padrão | Mediana | 95% Percentil | Máx | Taxa de Sucesso (%) | Total de Mensagens Recebidas (média) |
 |-----------|--------------------|---------------|---------|---------------|-----|---------------------|--------------------------------------|
 | C++       | 0.51               | 0.31          | 0.43    | 1.02          | 2.66| 100                 | 106434.17                            |
 | Go        | 0.34               | 0.17          | 0.32    | 0.66          | 1.10| 100                 | 106434.17                            |
+---
 
-- Ambos os servidores atingiram 100% de taxa de sucesso em todos os cenários.
-- O Go apresentou menor latência média e menor dispersão dos resultados.
-- O volume total de mensagens recebidas foi equivalente entre as linguagens.
+## Comparação e Interpretação das Tabelas
+
+Ao comparar as duas tabelas, que apresentam estatísticas consolidadas por linguagem, observamos algumas tendências consistentes e algumas diferenças notáveis nos valores das métricas.
+
+**Consistências:**
+
+* **Total de Mensagens Recebidas (média):** Ambas as tabelas mostram que, em média, tanto a implementação C++ quanto a Go processaram o mesmo volume de mensagens: **106.434,17 mensagens**. Isso sugere que a carga de teste aplicada foi a mesma para ambas as linguagens e que o sistema conseguiu processar a carga consistentemente.
+* **Hierarquia de Desempenho (C++ vs. Go):** Em ambas as tabelas, a implementação em **Go consistentemente apresenta latências menores** (Média, Mediana, 95% Percentil e Máx) e um desvio padrão menor em comparação com a implementação C++. Isso indica que Go é mais rápido e mais consistente em seu tempo de resposta do que C++.
+
+**Diferenças e Discrepâncias:**
 
 ---
